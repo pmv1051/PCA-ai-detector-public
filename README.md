@@ -670,13 +670,15 @@ The evaluation generates three plots:
 
 #### Confusion Matrix
 ![Confusion Matrix](sample/sample_confusion_matrix.png)
+Visual representation of correct vs incorrect classifications
 
 #### ROC Curve (AUC: 0.8863)
 ![ROC Curve](sample/sample_roc_curve.png)
+ROC curve showing true positive rate vs false positive rate (AUC: 0.8863)
 
 #### Confidence Distribution
 ![Confidence Distribution](sample/sample_confidence_dist.png)
-
+Distribution of prediction confidence scores
 
 
 ### System Requirements
