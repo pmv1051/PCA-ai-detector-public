@@ -157,7 +157,7 @@ If you prefer not to use the API or encounter issues:
 1. Visit [CIFAKE Dataset on Kaggle](https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images)
 2. Click **"Download"** (requires Kaggle login)
 3. Extract the ZIP file
-4. Organize manually (see [Manual Dataset Organization](#manual-dataset-organization))
+4. Organize manually 
 
 ## Dataset Preparation
 
