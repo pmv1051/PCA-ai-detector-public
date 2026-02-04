@@ -247,31 +247,46 @@ def extract_features(image_path):
     return all_features
 
 
-def extract_features_batch(image_paths, verbose=True):
+def _extract_features_worker(img_path):
+    """Worker function for parallel feature extraction."""
+    try:
+        return extract_features(img_path)
+    except Exception:
+        return None
+
+
+def extract_features_batch(image_paths, verbose=True, n_workers=None):
     """
-    Extract features from multiple images.
+    Extract features from multiple images using parallel processing.
 
     Args:
         image_paths: List of image file paths
         verbose: Show progress bar
+        n_workers: Number of parallel workers (default: CPU count)
 
     Returns:
         Feature matrix (n_images, n_features)
     """
     from tqdm import tqdm
+    from multiprocessing import Pool, cpu_count
+
+    if n_workers is None:
+        n_workers = cpu_count()
 
     features_list = []
 
-    iterator = tqdm(image_paths, desc="Extracting features") if verbose else image_paths
+    with Pool(processes=n_workers) as pool:
+        if verbose:
+            results = list(tqdm(
+                pool.imap(_extract_features_worker, image_paths),
+                total=len(image_paths),
+                desc=f"Extracting features ({n_workers} workers)"
+            ))
+        else:
+            results = pool.map(_extract_features_worker, image_paths)
 
-    for img_path in iterator:
-        try:
-            features = extract_features(img_path)
-            features_list.append(features)
-        except Exception as e:
-            if verbose:
-                print(f"Error processing {img_path}: {e}")
-            continue
+    # Filter out failed extractions
+    features_list = [f for f in results if f is not None]
 
     if len(features_list) == 0:
         return np.array([])
